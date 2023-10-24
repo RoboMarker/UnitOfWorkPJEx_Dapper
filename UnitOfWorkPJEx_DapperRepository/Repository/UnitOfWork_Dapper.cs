@@ -1,32 +1,29 @@
-﻿using Microsoft.Data.SqlClient;
-using Microsoft.Extensions.Configuration;
-using System.Data;
+﻿using System.Data;
 using UnitOfWorkPJEx_DapperRepository.Interface;
 
 namespace UnitOfWorkPJEx_DapperRepository.Repository
 {
     public class UnitOfWork_Dapper : IUnitOfWork_Dapper, IDisposable
     {
-        private IConfiguration _config ;
-        private IDbConnection _connection;
+        private  IDbConnection _connection;
         private IDbTransaction _transaction;
 
         public IUserRepository Users
         { get; }
 
-        public UnitOfWork_Dapper (IConfiguration config)
+        public UnitOfWork_Dapper(IDbConnection connection, IDbTransaction transaction, IUserRepository user)
         {
-            _config = config;
-            _connection = new SqlConnection(_config.GetConnectionString("DefConnectionStr"));
+            Users = user;
+            _connection = connection ?? throw new ArgumentNullException(nameof(connection));
             if (_connection.State != ConnectionState.Open)
             {
                 _connection.Open();
             }
-
-            if (_transaction == null)
-            {
-                _transaction = _connection.BeginTransaction();
-            }
+            _transaction = transaction;
+            //if (_transaction == null)
+            //{
+            //    _transaction = _connection.BeginTransaction();
+            //}
         }
         public void Commit()
         {

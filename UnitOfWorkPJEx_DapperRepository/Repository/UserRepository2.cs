@@ -4,9 +4,9 @@ using UnitOfWorkPJEx_DapperRepository.Models.Data;
 
 namespace UnitOfWorkPJEx_DapperRepository.Repository
 {
-    public class UserRepository : GenericRepository<User>, IUserRepository
+    public class UserRepository2 : GenericRepository2<User>, IUserRepository
     {
-        public UserRepository(IUnitOfWork_Dapper unitOfWork) : base(unitOfWork)
+        public UserRepository2(IDbConnection connection, IDbTransaction transaction) : base(connection, transaction)
         { 
         }
     }

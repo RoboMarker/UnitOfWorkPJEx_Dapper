@@ -1,21 +1,19 @@
 ﻿using Dapper;
-using Microsoft.Extensions.Configuration;
 using System.Data;
 using UnitOfWorkPJEx_DapperRepository.Interface;
 
-
 namespace UnitOfWorkPJEx_DapperRepository.Repository
 {
-    public abstract class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEntity : class
+    public abstract class GenericRepository2<TEntity> : IGenericRepository<TEntity> where TEntity : class
     {
 
         internal IDbConnection _connection;
         internal IDbTransaction _transaction;
 
-        protected GenericRepository(IUnitOfWork_Dapper unitOfWork)
+        protected GenericRepository2(IDbConnection connection, IDbTransaction transaction)
         {
-            _connection = unitOfWork.Connection;
-            _transaction = unitOfWork.Transaction;
+            _connection = connection;
+            _transaction = transaction;
         }
         public TEntity GetById(int id)
         {
